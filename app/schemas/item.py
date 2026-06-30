@@ -7,6 +7,7 @@ class ItemCreate(BaseModel):
     name: str
     category: Literal[
         "medicine",
+        "pediatric_medications",
         "clothing",
         "textiles",
         "food",
@@ -14,6 +15,9 @@ class ItemCreate(BaseModel):
         "cleaning",
         "tools",
         "medical_supplies",
+        "for_children",
+        "for_rescuers",
+        "veterinary_use",
         "others"
     ]
     priority: Literal[
@@ -31,6 +35,7 @@ class ItemResponse(BaseModel):
     name: str
     category: Literal[
         "medicine",
+        "pediatric_medications",
         "clothing",
         "textiles",
         "food",
@@ -38,6 +43,9 @@ class ItemResponse(BaseModel):
         "cleaning",
         "tools",
         "medical_supplies",
+        "for_children",
+        "for_rescuers",
+        "veterinary_use",
         "others"
     ]
     priority: Literal[

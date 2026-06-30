@@ -9,6 +9,7 @@ PRIORITY_LABELS = {
 CATEGORIES = [
 
     "medicine",
+    "pediatric_medications",
     "clothing",
     "textiles",
     "food",
@@ -16,6 +17,9 @@ CATEGORIES = [
     "cleaning",
     "tools",
     "medical_supplies",
+    "for_children",
+    "for_rescuers",
+    "veterinary_use",
     "others"
 ]
 
@@ -23,6 +27,7 @@ CATEGORIES = [
 CATEGORY_LABELS = {
 
     "medicine": "Medicina",
+    "pediatric_medications": "Medicamentos pediátricos",
     "clothing": "Ropa",
     "textiles": "Textil",
     "food": "Alimento",
@@ -30,6 +35,9 @@ CATEGORY_LABELS = {
     "cleaning": "Limpieza",
     "tools": "Herramientas",
     "medical_supplies": "Insumos médicos",
+    "for_children": "Para niños",
+    "for_rescuers": "Para rescatistas",
+    "veterinary_use": "Uso veterinario",
     "others": "Otros"
 }
 
