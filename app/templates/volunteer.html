@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="page-header">
+
+    <div class="header-top">
+
+        <div>
+
+            <div class="greeting">
+
+                Hola
+
+                {% if user.role=="director" %}
+                    Gerente
+                {% else %}
+                    Voluntario
+                {% endif %}
+
+                👋 
+
+                <hr>
+                <b>
+
+                {{ user.name }}
+
+                </b>
+
+                
+
+            </div>
+
+            <div class="center-title">
+
+                {% if user.role=="director" %}
+
+                Vista General de Centros de Acopios
+
+                {% else %}
+
+                Centro de Acopio: {{ user.center.name }}
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <a
+        href="/logout"
+        class="logout-btn"
+        >
+
+        Salir
+
+        </a>
+
+    </div>
+
+
+    {% if user.role=="director" %}
+
+    <form class="center-selector">
+
+        <select
+        name="selected_center"
+        onchange="this.form.submit()"
+        >
+
+        {% for center in centers %}
+
+        <option
+        value="{{ center.id }}"
+
+        {% if center.id==selected_center %}
+        selected
+        {% endif %}
+        >
+
+        {{ center.name }}
+
+        </option>
+
+        {% endfor %}
+
+        </select>
+
+    </form>
+
+    {% endif %}
+
+    <div class="actions-bar">
+        <button class="action-btn new-item-btn" onclick="openModal()">
+            ＋ Nuevo item
+        </button>
+
+        <a class="action-btn excel-btn"
+        href="/export/excel?center_id={{ selected_center }}">
+            ⬇ Excel
+        </a>
+
+        <a class="action-btn pdf-btn"
+        href="/export/pdf?center_id={{ selected_center }}">
+            ⬇ PDF
+        </a>
+
+        <button class="action-btn reset-btn">
+            ↺ Reiniciar
+        </button>
+
+    </div>
+
+    <div class="search-container">
+        <input
+            id="search"
+            type="text"
+            placeholder="🔎 Buscar donación..."
+            onkeyup="filterItems()"
+        >
+    </div>
+
+    <div id="itemModal" class="modal">
+
+        <div class="modal-content">
+
+            <div class="modal-title">
+                Nuevo item
+            </div>
+
+            <div class="modal-warning">
+                Antes de guardar verifica que el item no exista ya en la lista para evitar duplicidades.
+            </div>
+
+
+            <form method="post" action="/items" >
+
+                <input
+                    name="name"
+                    placeholder="Nombre del item"
+                    required
+                >
+
+                <select name="category" required>
+
+                    <option value="">
+                        Categoría
+                    </option>
+
+                    {% for key,label in categories.items() %}
+                        <option value="{{ key }}"> {{ label }} </option>
+                    {% endfor %}
+
+                </select>
+
+
+                <select name="priority" required >
+
+                    <option value=""> Prioridad </option>
+
+                        {% for key,label in priorities.items() %}
+                            <option value="{{ key }}"> {{ label }} </option>
+                        {% endfor %}
+
+                </select>
+
+
+                <div class="modal-buttons">
+
+                    <button type="button" onclick="closeModal()" class="cancel">
+                        Cancelar
+                    </button>
+
+
+                    <button type="submit" class="save" > Guardar </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Categoría</th>
+                    <th>Donación</th>
+                    <th>Prioridad</th>
+                    <th>Unidades Recaudadas</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="tableBody">
+
+                {% for row in items %}
+
+                {% set item = row.item %}
+
+                <tr class="item-row">
+
+                    <td>
+                        <span class="category-label"> {{ categories[item.category] }} </span>
+                    </td>
+
+                    <td>
+
+                        <div class="donation-name">{{ item.name }}  </div>
+
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="priority priority-{{ item.priority }}"
+                            >
+
+                            {% if item.priority=="critic" %}
+                            Crítica
+
+                            {% elif item.priority=="high" %}
+                            Alta
+
+                            {% elif item.priority=="mid" %}
+                            Media
+
+                            {% else %}
+                            Baja
+
+                            {% endif %}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <form
+                            class="inventory-form"
+                            hx-post="/inventory"
+                            hx-trigger="change"
+                            hx-target="this"
+                            hx-swap="none"
+                            onsubmit="return false"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="center_id"
+                                value="{{ selected_center }}"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="item_id"
+                                value="{{ row.item.id }}"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="user_id"
+                                value="{{ user.id }}"
+                            >
+
+                            <input
+                                class="qty-input"
+                                type="number"
+                                name="quantity"
+                                min="0"
+                                step="1"
+                                value="{{ row.total }}"
+                                hx-include="closest form"
+                            >
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+    
+
+</div>
+
+<script>
+
+    function filterItems(){
+
+        const search =
+            document
+            .getElementById(
+            "search"
+            )
+            .value
+            .trim()
+            .toLowerCase()
+
+        const rows =
+            document.querySelectorAll(
+            ".item-row"
+            )
+
+        rows.forEach(
+            row=>{
+
+                const text =
+                row
+                .innerText
+                .toLowerCase()
+
+                row.style.display =
+                text.includes(
+                search
+                )
+                ?
+                "table-row"
+                :
+                "none"
+
+            }
+        )
+
+    }
+
+    function openModal(){
+
+        document.getElementById("itemModal")
+            .style
+            .display
+            =
+            "flex";
+            }
+
+
+    function closeModal(){
+        document
+            .getElementById("itemModal")
+        .style
+        .display
+        =
+        "none";
+    }
+
+</script>
+
+
+
+{% endblock %}

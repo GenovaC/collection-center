@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <meta charset="utf-8">
+
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1">
+
+        <link
+            rel="stylesheet"
+            href="/static/styles.css">
+
+        <title> Centro de Acopio - Gerencia Bolívar</title>
+
+    </head>
+
+    <body class="login-page">
+
+        <div class="login-container">
+
+            <img
+                src="/static/Logo El Sistema.jpg"
+                class="login-logo"
+                alt="Logo"
+            >
+
+            <h1> Centro de Acopio </h1>
+
+            <p class="login-subtitle"> Registro de donaciones </p>
+
+            {% if error %}
+                <div class="login-error"> {{ error }} </div>
+            {% endif %}
+
+            <form
+                method="post"
+                action="/login"
+                class="login-form"
+            >
+
+            <input
+                name="username"
+                placeholder="Usuario"
+                required
+            >
+
+            <input
+                name="password"
+                type="password"
+                placeholder="Contraseña"
+                required
+            >
+
+            <button type="submit"> Iniciar Sesión </button>
+
+            </form>
+        </div>
+    </body>
+</html>
