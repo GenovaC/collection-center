@@ -68,12 +68,6 @@ flask db upgrade
 
 ---
 
-### 6. Ejecutar proyecto
-
-```bash id="c1cl06"
-flask run
-```
-
 ---
 
 ## 🐘 Configuración PostgreSQL
@@ -87,6 +81,18 @@ CREATE DATABASE collection_center;
 Si usas usuario distinto al `postgres`, ajusta la URL en `.env`.
 
 ---
+
+### 6. 🚀 Setup del proyecto
+
+```bash id="c1cl06"
+# Levantar la aplicación
+uvicorn app.main:app --reload
+
+# Crear datos iniciales
+python -m app.seeders.seed
+```
+
+
 
 ## 📊 Modelo de prioridad
 
@@ -107,15 +113,15 @@ La interfaz traduce automáticamente estos valores y los muestra con colores.
 
 ```text id="c1cl08"
 app/
+ ├── api/
+ ├── core/
+ ├── db/
  ├── models/
- ├── routes/
- ├── templates/
- ├── static/
+ ├── schemas/
  ├── services/
- ├── __init__.py
-migrations/
-requirements.txt
-run.py
+ ├── static/
+ ├── templates/
+ main.py
 ```
 
 ---
