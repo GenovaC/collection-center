@@ -1,7 +1,8 @@
 from fastapi import (
     APIRouter,
     Depends,
-    Request
+    Request, 
+    Form
 )
 
 from fastapi.responses import (
@@ -32,7 +33,7 @@ def reset_center(
 
     request: Request,
 
-    center_id:int,
+    center_id: int = Form(...),
 
     db:Session=Depends(
     get_db

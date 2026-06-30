@@ -25,7 +25,7 @@ from app.core.constants import (
     CATEGORY_LABELS,
     PRIORITY_LABELS
 )
-from app.core.auth import (require_login)
+from app.models.user import (User)
 
 
 router = APIRouter()
@@ -37,42 +37,77 @@ templates = Jinja2Templates(
 
 @router.get("/")
 def volunteer_page(
+
     request: Request,
+
     selected_center: int | None = None,
-    user=Depends(
-        current_user
-    ),
+
     db: Session = Depends(
         get_db
     )
+
 ):
-    
-    redirect = require_login(
-    request
+
+    user_id = request.session.get(
+        "user_id"
     )
 
-    if redirect:
-        return redirect
+    if not user_id:
 
-    if not request.session.get("user_id"):
-        return RedirectResponse("/login", 302)
+        return RedirectResponse(
+            "/login",
+            status_code=302
+        )
+
+    user = (
+
+        db.query(
+            User
+        )
+
+        .filter(
+            User.id
+            ==
+            user_id
+        )
+
+        .first()
+
+    )
+
+    if not user:
+
+        request.session.clear()
+
+        return RedirectResponse(
+            "/login",
+            status_code=302
+        )
 
     if user.role == "director":
 
         center_id = (
+
             selected_center
+
             or
+
             user.center_id
+
         )
 
         centers = (
+
             db.query(
                 Center
             )
+
             .order_by(
                 Center.name
             )
+
             .all()
+
         )
 
     else:
@@ -80,35 +115,47 @@ def volunteer_page(
         center_id = (
             user.center_id
         )
+
         centers = []
 
     items = (
 
         db.query(
+
             Item,
+
             func.coalesce(
+
                 Inventory.quantity,
+
                 0
+
             ).label(
                 "total"
             )
+
         )
 
         .outerjoin(
 
             Inventory,
+
             (
+
                 Inventory.item_id
                 ==
                 Item.id
+
             )
 
             &
 
             (
+
                 Inventory.center_id
                 ==
                 center_id
+
             )
 
         )
@@ -126,26 +173,41 @@ def volunteer_page(
     )
 
     return templates.TemplateResponse(
+
         request,
+
         "volunteer.html",
 
         {
+
             "request": request,
-            "items": [
+
+            "items":[
+
                 {
-                "item": i,
-                "total": t
+
+                    "item":i,
+
+                    "total":t
+
                 }
 
-                for i, t
-                    in items
+                for i,t
+
+                in items
 
             ],
-            "user": user,
-            "centers": centers,
-            "selected_center": center_id,
-            "categories": CATEGORY_LABELS,
-            "priorities": PRIORITY_LABELS
+
+            "user":user,
+
+            "centers":centers,
+
+            "selected_center":center_id,
+
+            "categories":CATEGORY_LABELS,
+
+            "priorities":PRIORITY_LABELS
+
         }
 
     )
