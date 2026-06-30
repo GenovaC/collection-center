@@ -11,9 +11,9 @@ def run_seeds():
     try:
         print("🚀 Starting seeding process...")
 
-       # seed_centers(db)
+        seed_centers(db)
         seed_users(db)
-       # seed_items(db)
+        seed_items(db)
 
         db.commit()
 
