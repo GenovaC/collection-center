@@ -4,6 +4,8 @@ from fastapi import (
     HTTPException
 )
 
+from fastapi.responses import RedirectResponse
+
 from sqlalchemy.orm import (
     Session
 )
@@ -45,3 +47,20 @@ def current_user(
             user_id
         )
     )
+
+def require_login(
+    request: Request
+):
+
+    user_id = request.session.get(
+        "user_id"
+    )
+
+    if not user_id:
+
+        return RedirectResponse(
+            "/login",
+            status_code=302
+        )
+
+    return None

@@ -25,6 +25,7 @@ from app.core.constants import (
     CATEGORY_LABELS,
     PRIORITY_LABELS
 )
+from app.core.auth import (require_login)
 
 
 router = APIRouter()
@@ -46,6 +47,13 @@ def volunteer_page(
     )
 ):
     
+    redirect = require_login(
+    request
+    )
+
+    if redirect:
+        return redirect
+
     if not request.session.get("user_id"):
         return RedirectResponse("/login", 302)
 

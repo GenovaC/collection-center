@@ -26,6 +26,7 @@ from app.api.pages import (router as page_router)
 from app.api.inventory import router as inventory_router
 from app.api.report_pdf import (router as report_router)
 from app.api.report_excel import (router as report_excel_router)
+from app.api.reset import (router as reset_router)
 
 
 
@@ -60,6 +61,7 @@ app.include_router(auth_router)
 app.include_router(inventory_router)
 app.include_router(report_router)
 app.include_router(report_excel_router)
+app.include_router(reset_router)
 
 
 @app.get("/")

@@ -5,13 +5,14 @@ from fastapi import (
 )
 
 from fastapi.responses import (
-    StreamingResponse
+    StreamingResponse, RedirectResponse
 )
 
 from sqlalchemy.orm import (
     Session
 )
 
+from app.core.auth import require_login
 from app.db.database import (
     get_db
 )
@@ -46,6 +47,13 @@ def export_pdf(
     )
 
 ):
+    
+    redirect = require_login(
+        request
+    )
+
+    if redirect:
+        return redirect
 
     user_id = request.session.get(
         "user_id"

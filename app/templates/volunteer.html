@@ -107,9 +107,16 @@
             ⬇ PDF
         </a>
 
-        <button class="action-btn reset-btn">
-            ↺ Reiniciar
-        </button>
+        <form
+            method="post"
+            action="/inventory/reset"
+
+            onsubmit="return confirm('¿Seguro que deseas reiniciar el conteo del centro?')"  >
+
+            <input type="hidden" name="center_id" value="{{ selected_center }}">
+            <button type="submit" class="action-btn reset-btn" > ↺ Reiniciar </button>
+
+        </form>
 
     </div>
 
