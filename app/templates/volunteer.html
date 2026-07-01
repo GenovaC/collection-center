@@ -249,13 +249,38 @@
         <table>
 
             <thead>
-
                 <tr>
 
-                    <th>Categoría</th>
-                    <th>Donación</th>
-                    <th>Prioridad</th>
-                    <th>Unidades Recaudadas</th>
+                    {% set next_order =
+                    "desc"
+                    if order=="asc"
+                    else
+                    "asc"
+                    %}
+
+                    <th>
+                        <a href="?selected_center={{ selected_center }}&sort_by=category&order={{ next_order }}">
+                        Categoría
+                        </a>
+                    </th>
+
+                    <th>
+                        <a href="?selected_center={{ selected_center }}&sort_by=name&order={{ next_order }}">
+                        Donación
+                        </a>
+                    </th>
+
+                    <th>
+                        <a href="?selected_center={{ selected_center }}&sort_by=priority&order={{ next_order }}">
+                        Prioridad
+                        </a>
+                    </th>
+
+                    <th>
+                        <a href="?selected_center={{ selected_center }}&sort_by=quantity&order={{ next_order }}">
+                        Unidades Recaudadas
+                        </a>
+                    </th>
 
                 </tr>
 
