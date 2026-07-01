@@ -10,110 +10,110 @@ def seed_items(db):
         # medical_supplies
         # ==========================
 
-        {"name": "Vendas elásticas", "category": "medical_supplies", "priority": "high"},
-        {"name": "Gasas", "category": "medical_supplies", "priority": "high"},
-        {"name": "Algodón", "category": "medical_supplies", "priority": "mid"},
-        {"name": "Guantes desechables", "category": "medical_supplies", "priority": "critic"},
-        {"name": "Jeringas con agujas", "category": "medical_supplies", "priority": "high"},
-        {"name": "Tensiómetros", "category": "medical_supplies", "priority": "mid"},
-        {"name": "Oxímetros", "category": "medical_supplies", "priority": "high"},
-        {"name": "Kits de primeros auxilios", "category": "medical_supplies", "priority": "critic"},
-        {"name": "Pañales para adultos", "category": "medical_supplies", "priority": "mid"},
+        {"name": "Vendas elásticas (unidades)", "category": "medical_supplies", "priority": "high"},
+        {"name": "Gasas (paquetes)", "category": "medical_supplies", "priority": "high"},
+        {"name": "Algodón (paquetes)", "category": "medical_supplies", "priority": "mid"},
+        {"name": "Guantes desechables (cajas)", "category": "medical_supplies", "priority": "critic"},
+        {"name": "Jeringas con agujas (unidades)", "category": "medical_supplies", "priority": "high"},
+        {"name": "Tensiómetros (unidades)", "category": "medical_supplies", "priority": "mid"},
+        {"name": "Oxímetros (unidades)", "category": "medical_supplies", "priority": "high"},
+        {"name": "Kits de primeros auxilios (unidades)", "category": "medical_supplies", "priority": "critic"},
+        {"name": "Pañales para adultos (paquetes)", "category": "medical_supplies", "priority": "mid"},
 
 
         # ==========================
         # medicine
         # ==========================
 
-        {"name": "Acetaminofén", "category": "medicine", "priority": "high"},
-        {"name": "Ibuprofeno", "category": "medicine", "priority": "high"},
-        {"name": "Paracetamol", "category": "medicine", "priority": "high"},
-        {"name": "Amoxicilina", "category": "medicine", "priority": "high"},
-        {"name": "Ciprofloxacina", "category": "medicine", "priority": "high"},
-        {"name": "Solución fisiológica (suero)", "category": "medicine", "priority": "critic"},
-        {"name": "Alcohol al 70%", "category": "medicine", "priority": "critic"},
-        {"name": "Loratadina", "category": "medicine", "priority": "mid"},
-        {"name": "Cetirizina", "category": "medicine", "priority": "mid"},
-        {"name": "Antiinflamatorios", "category": "medicine", "priority": "high"},
+        {"name": "Acetaminofén (cajas)", "category": "medicine", "priority": "high"},
+        {"name": "Ibuprofeno (cajas)", "category": "medicine", "priority": "high"},
+        {"name": "Paracetamol (cajas)", "category": "medicine", "priority": "high"},
+        {"name": "Amoxicilina (cajas)", "category": "medicine", "priority": "high"},
+        {"name": "Ciprofloxacina (cajas)", "category": "medicine", "priority": "high"},
+        {"name": "Solución fisiológica (suero) (unidades)", "category": "medicine", "priority": "critic"},
+        {"name": "Alcohol al 70% (frascos)", "category": "medicine", "priority": "critic"},
+        {"name": "Loratadina (cajas)", "category": "medicine", "priority": "mid"},
+        {"name": "Cetirizina (cajas)", "category": "medicine", "priority": "mid"},
+        {"name": "Antiinflamatorios (cajas)", "category": "medicine", "priority": "high"},
 
-        {"name": "Losartán", "category": "medicine", "priority": "critic"},
-        {"name": "Captopril", "category": "medicine", "priority": "critic"},
-        {"name": "Valsartán", "category": "medicine", "priority": "critic"},
-        {"name": "Omesartan", "category": "medicine", "priority": "critic"},
-        {"name": "Enalapril", "category": "medicine", "priority": "critic"},
-        {"name": "Amlodipina", "category": "medicine", "priority": "critic"},
-        {"name": "Nifedipina", "category": "medicine", "priority": "critic"},
-        {"name": "Metformina", "category": "medicine", "priority": "critic"},
-        {"name": "Levotiroxina", "category": "medicine", "priority": "critic"},
+        {"name": "Losartán (cajas)", "category": "medicine", "priority": "critic"},
+        {"name": "Captopril (cajas)", "category": "medicine", "priority": "critic"},
+        {"name": "Valsartán (cajas)", "category": "medicine", "priority": "critic"},
+        {"name": "Omesartan (cajas)", "category": "medicine", "priority": "critic"},
+        {"name": "Enalapril (cajas)", "category": "medicine", "priority": "critic"},
+        {"name": "Amlodipina (cajas)", "category": "medicine", "priority": "critic"},
+        {"name": "Nifedipina (cajas)", "category": "medicine", "priority": "critic"},
+        {"name": "Metformina (cajas)", "category": "medicine", "priority": "critic"},
+        {"name": "Levotiroxina (cajas)", "category": "medicine", "priority": "critic"},
 
-        {"name": "Artrodar", "category": "medicine", "priority": "low"},
-        {"name": "Metilprednisolona", "category": "medicine", "priority": "high"},
+        {"name": "Artrodar (cajas)", "category": "medicine", "priority": "low"},
+        {"name": "Metilprednisolona (cajas)", "category": "medicine", "priority": "high"},
 
 
         # ==========================
         # pediatric_medications
         # ==========================
 
-        {"name": "Acetaminofén (jarabe o gotas)", "category": "pediatric_medications", "priority": "high"},
-        {"name": "Ibuprofeno (suspensión)", "category": "pediatric_medications", "priority": "high"},
-        {"name": "Salbutamol (inhalador)", "category": "pediatric_medications", "priority": "critic"},
-        {"name": "Loratadina/Desloratadina (jarabe)", "category": "pediatric_medications", "priority": "mid"},
-        {"name": "Amoxicilina/Cefalexina (suspensión)", "category": "pediatric_medications", "priority": "high"},
-        {"name": "Suero de rehidratación oral", "category": "pediatric_medications", "priority": "critic"},
+        {"name": "Acetaminofén (jarabe o gotas) (frascos)", "category": "pediatric_medications", "priority": "high"},
+        {"name": "Ibuprofeno (suspensión) (frascos)", "category": "pediatric_medications", "priority": "high"},
+        {"name": "Salbutamol (inhalador) (unidades)", "category": "pediatric_medications", "priority": "critic"},
+        {"name": "Loratadina/Desloratadina (jarabe) (frascos)", "category": "pediatric_medications", "priority": "mid"},
+        {"name": "Amoxicilina/Cefalexina (suspensión) (frascos)", "category": "pediatric_medications", "priority": "high"},
+        {"name": "Suero de rehidratación oral (sobres)", "category": "pediatric_medications", "priority": "critic"},
 
 
         # ==========================
         # textiles
         # ==========================
 
-        {"name": "Centros de cama", "category": "textiles", "priority": "high"},
-        {"name": "Cobijas", "category": "textiles", "priority": "high"},
+        {"name": "Centros de cama (unidades)", "category": "textiles", "priority": "high"},
+        {"name": "Cobijas (unidades)", "category": "textiles", "priority": "high"},
 
 
         # ==========================
         # for_children
         # ==========================
 
-        {"name": "Pañales", "category": "for_children", "priority": "critic"},
-        {"name": "Toallitas húmedas", "category": "for_children", "priority": "high"},
-        {"name": "Fórmula para bebés", "category": "for_children", "priority": "critic"},
-        {"name": "Biberones", "category": "for_children", "priority": "high"},
-        {"name": "Jabón neutro", "category": "for_children", "priority": "high"},
-        {"name": "Shampoo para niños", "category": "for_children", "priority": "mid"},
-        {"name": "Crema antipañalitis", "category": "for_children", "priority": "high"},
+        {"name": "Pañales (paquetes)", "category": "for_children", "priority": "critic"},
+        {"name": "Toallitas húmedas (paquetes)", "category": "for_children", "priority": "high"},
+        {"name": "Fórmula para bebés (latas)", "category": "for_children", "priority": "critic"},
+        {"name": "Biberones (unidades)", "category": "for_children", "priority": "high"},
+        {"name": "Jabón neutro (unidades)", "category": "for_children", "priority": "high"},
+        {"name": "Shampoo para niños (frascos)", "category": "for_children", "priority": "mid"},
+        {"name": "Crema antipañalitis (tubos)", "category": "for_children", "priority": "high"},
 
 
         # ==========================
         # for_rescuers
         # ==========================
 
-        {"name": "Botas de seguridad", "category": "for_rescuers", "priority": "critic"},
-        {"name": "Medias gruesas", "category": "for_rescuers", "priority": "critic"},
-        {"name": "Cascos resistentes", "category": "for_rescuers", "priority": "critic"},
-        {"name": "Tapabocas KN95", "category": "for_rescuers", "priority": "critic"},
-        {"name": "Guantes", "category": "for_rescuers", "priority": "critic"},
-        {"name": "Linternas", "category": "for_rescuers", "priority": "critic"},
-        {"name": "Lentes de seguridad", "category": "for_rescuers", "priority": "critic"},
-        {"name": "Bebidas hidratantes", "category": "for_rescuers", "priority": "critic"},
-        {"name": "Alimentos de fácil consumo", "category": "for_rescuers", "priority": "critic"},
+        {"name": "Botas de seguridad (pares)", "category": "for_rescuers", "priority": "critic"},
+        {"name": "Medias gruesas (pares)", "category": "for_rescuers", "priority": "critic"},
+        {"name": "Cascos resistentes (unidades)", "category": "for_rescuers", "priority": "critic"},
+        {"name": "Tapabocas KN95 (unidades)", "category": "for_rescuers", "priority": "critic"},
+        {"name": "Guantes de trabajo (pares)", "category": "for_rescuers", "priority": "critic"},
+        {"name": "Linternas (unidades)", "category": "for_rescuers", "priority": "critic"},
+        {"name": "Lentes de seguridad (unidades)", "category": "for_rescuers", "priority": "critic"},
+        {"name": "Bebidas hidratantes (unidades)", "category": "for_rescuers", "priority": "critic"},
+        {"name": "Alimentos de fácil consumo (unidades)", "category": "for_rescuers", "priority": "critic"},
 
 
         # ==========================
         # veterinary_use
         # ==========================
 
-        {"name": "Suero de hidratación", "category": "veterinary_use", "priority": "critic"},
-        {"name": "Complejos vitamínicos", "category": "veterinary_use", "priority": "mid"},
-        {"name": "Relajantes musculares", "category": "veterinary_use", "priority": "high"},
-        {"name": "Comida húmeda y seca", "category": "veterinary_use", "priority": "critic"},
-        {"name": "Alimento para perros y gatos (seco y húmedo)", "category": "veterinary_use", "priority": "critic"},
-        {"name": "Cobijas para mascotas", "category": "veterinary_use", "priority": "mid"},
-        {"name": "Correas o arnés para perros y gatos", "category": "veterinary_use", "priority": "high"},
-        {"name": "Camitas", "category": "veterinary_use", "priority": "low"},
-        {"name": "Antibióticos de uso veterinario", "category": "veterinary_use", "priority": "critic"},
-        {"name": "Analgésicos de uso veterinario", "category": "veterinary_use", "priority": "critic"},
+        {"name": "Suero de hidratación (unidades)", "category": "veterinary_use", "priority": "critic"},
+        {"name": "Complejos vitamínicos (frascos)", "category": "veterinary_use", "priority": "mid"},
+        {"name": "Relajantes musculares (cajas)", "category": "veterinary_use", "priority": "high"},
+        {"name": "Comida húmeda y seca (unidades)", "category": "veterinary_use", "priority": "critic"},
+        {"name": "Alimento para perros y gatos (seco y húmedo) (unidades)", "category": "veterinary_use", "priority": "critic"},
+        {"name": "Cobijas para mascotas (unidades)", "category": "veterinary_use", "priority": "mid"},
+        {"name": "Correas o arnés para perros y gatos (unidades)", "category": "veterinary_use", "priority": "high"},
+        {"name": "Camitas (unidades)", "category": "veterinary_use", "priority": "low"},
+        {"name": "Antibióticos de uso veterinario (cajas)", "category": "veterinary_use", "priority": "critic"},
+        {"name": "Analgésicos de uso veterinario (cajas)", "category": "veterinary_use", "priority": "critic"},
 
-        ]
+    ]
 
     items = [
         Item(**item) for item in items_data

@@ -13,4 +13,4 @@ instance/
 
 .vscode/
 .idea/
-generate_password.py
+app/generate_hash.py

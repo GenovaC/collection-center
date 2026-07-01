@@ -7,7 +7,7 @@ def seed_centers(db):
     centers = [
         Center(name="Eje Norte: Núcleo Ciudad Bolívar"),
         Center(name="Eje Central: Núcleo Ciudad Guayana"),
-        Center(name="Eje Sur: Centro Academico Regional Upata"),
+        Center(name="Eje Sur: Centro Académico Regional Upata"),
     ]
 
     db.add_all(centers)
