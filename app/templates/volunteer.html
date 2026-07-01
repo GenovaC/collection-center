@@ -249,39 +249,67 @@
         <table>
 
             <thead>
+
                 <tr>
 
-                    {% set next_order =
-                    "desc"
-                    if order=="asc"
-                    else
-                    "asc"
-                    %}
-
                     <th>
-                        <a href="?selected_center={{ selected_center }}&sort_by=category&order={{ next_order }}">
-                        Categoría
+                        <a
+                            class="sort-link {% if sort_by=='category' %}active{% endif %}"
+                            href="?selected_center={{ selected_center }}&sort_by=category&order={{ 'desc' if sort_by=='category' and order=='asc' else 'asc' }}"
+                            >
+
+                            Categoría
+
+                            {% if sort_by=="category" %}
+                            <span>{{ "↑" if order=="asc" else "↓" }}</span>
+                            {% endif %}
                         </a>
                     </th>
 
+
                     <th>
-                        <a href="?selected_center={{ selected_center }}&sort_by=name&order={{ next_order }}">
-                        Donación
+                        <a
+                            class="sort-link {% if sort_by=='name' %}active{% endif %}"
+                            href="?selected_center={{ selected_center }}&sort_by=name&order={{ 'desc' if sort_by=='name' and order=='asc' else 'asc' }}"
+                            >
+
+                            Donación
+
+                            {% if sort_by=="name" %}
+                                <span>{{ "↑" if order=="asc" else "↓" }}</span>
+                            {% endif %}
                         </a>
                     </th>
 
+
                     <th>
-                        <a href="?selected_center={{ selected_center }}&sort_by=priority&order={{ next_order }}">
-                        Prioridad
+                        <a
+                            class="sort-link {% if sort_by=='priority' %}active{% endif %}"
+                            href="?selected_center={{ selected_center }}&sort_by=priority&order={{ 'desc' if sort_by=='priority' and order=='asc' else 'asc' }}"
+                            >
+
+                            Prioridad
+
+                            {% if sort_by=="priority" %}
+                                <span>{{ "↑" if order=="asc" else "↓" }}</span>
+                            {% endif %}
                         </a>
                     </th>
 
+
                     <th>
-                        <a href="?selected_center={{ selected_center }}&sort_by=quantity&order={{ next_order }}">
-                        Unidades Recaudadas
+                        <a
+                            class="sort-link {% if sort_by=='quantity' %}active{% endif %}"
+                            href="?selected_center={{ selected_center }}&sort_by=quantity&order={{ 'desc' if sort_by=='quantity' and order=='asc' else 'asc' }}"
+                            >
+
+                            Unidades Recaudadas
+
+                            {% if sort_by=="quantity" %}
+                                <span>{{ "↑" if order=="asc" else "↓" }}</span>
+                            {% endif %}
                         </a>
                     </th>
-
                 </tr>
 
             </thead>
