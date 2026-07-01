@@ -4,18 +4,12 @@ from fastapi import (
     Request
 )
 
-from fastapi.responses import (
-    StreamingResponse, RedirectResponse
-)
+from fastapi.responses import StreamingResponse
 
-from sqlalchemy.orm import (
-    Session
-)
+from sqlalchemy.orm import Session
 
 from app.core.auth import require_login
-from app.db.database import (
-    get_db
-)
+from app.db.database import get_db
 
 from app.models.user import User
 from app.models.center import Center
@@ -27,70 +21,46 @@ from app.services.report_excel_service import (
 router = APIRouter()
 
 
-@router.get(
-    "/export/excel"
-)
+@router.get("/export/excel")
 def export_excel(
-
     request: Request,
-
     center_id: int | None = None,
-
-    db: Session = Depends(
-        get_db
-    )
-
+    db: Session = Depends(get_db)
 ):
-    
-    redirect = require_login(
-        request
-    )
 
+    redirect = require_login(request)
     if redirect:
         return redirect
 
-    user_id = request.session.get(
-        "user_id"
-    )
+    user_id = request.session.get("user_id")
 
     user = (
-
-        db.query(
-            User
-        )
-
-        .filter(
-            User.id == user_id
-        )
-
+        db.query(User)
+        .filter(User.id == user_id)
         .first()
-
     )
 
-    if (
+    if not user:
+        return RedirectResponse("/login", status_code=302)
 
-        user.role
-        ==
-        "director"
+    is_global = (
+        user.role == "director"
+        and center_id == 0
+    )
 
-        and
+    if is_global:
 
-        center_id
+        center = None
 
+    elif (
+        user.role == "director"
+        and center_id
     ):
 
         center = (
-
-            db.query(
-                Center
-            )
-
-            .filter(
-                Center.id == center_id
-            )
-
+            db.query(Center)
+            .filter(Center.id == center_id)
             .first()
-
         )
 
     else:
@@ -99,31 +69,22 @@ def export_excel(
 
     file = generate_excel_report(
         db,
-        center
+        center,
+        is_global=is_global
     )
 
+    filename = (
+        "reporte_global"
+        if is_global
+        else center.name
+    ).replace(" ", "_")
+
     return StreamingResponse(
-
         file,
-
         media_type=(
-
-            "application/"
-
-            "vnd.openxmlformats-"
-
-            "officedocument."
-
-            "spreadsheetml.sheet"
-
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         ),
-
         headers={
-
-            "Content-Disposition":
-
-            f'attachment; filename="{center.name}.xlsx"'
-
+            "Content-Disposition": f'attachment; filename="{filename}.xlsx"'
         }
-
-    )   
+    )

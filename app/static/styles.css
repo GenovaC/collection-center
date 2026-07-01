@@ -381,32 +381,87 @@ background:#388E3C;
 
     width:100%;
 
-    height:48px;
+    height:52px;
 
     padding:
 
     0
-    14px;
+    16px;
 
-    border:none;
+    border:
 
-    border-radius:12px;
+    1px
+    solid
+    #D9E2EC;
 
-    background:#F7F9FC;
+    border-radius:14px;
+
+    background:#F8FAFC;
 
     font-size:15px;
+
+    color:#263238;
 
     box-shadow:
 
     0
     2px
-    8px
+    10px
     rgba(
-    0,
-    0,
-    0,
-    0.05
+        15,
+        23,
+        42,
+        0.04
     );
+
+    transition:
+
+    border-color .18s ease,
+
+    box-shadow .18s ease,
+
+    background .18s ease;
+
+}
+
+
+.center-selector select:hover{
+
+    border-color:#C4D3E3;
+
+}
+
+
+.center-selector select:focus{
+
+    outline:none;
+
+    border-color:#90CAF9;
+
+    box-shadow:
+
+    0
+    0
+    0
+    4px
+    rgba(
+        21,
+        101,
+        192,
+        0.10
+    ),
+
+    0
+    4px
+    12px
+    rgba(
+        21,
+        101,
+        192,
+        0.06
+    );
+
+    background:white;
 
 }
 

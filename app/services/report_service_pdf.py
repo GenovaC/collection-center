@@ -11,302 +11,175 @@ from reportlab.platypus import (
 )
 
 from reportlab.lib import colors
-
-from reportlab.lib.styles import (
-    getSampleStyleSheet
-)
-
-from reportlab.lib.enums import (
-    TA_CENTER
-)
-
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.units import cm
+from reportlab.platypus import Paragraph
+from reportlab.lib.styles import ParagraphStyle
 
-
-
-from reportlab.pdfgen.canvas import Canvas
+from sqlalchemy import func
 
 from app.models.inventory import Inventory
 from app.models.item import Item
-
-from app.core.constants import (
-    CATEGORY_LABELS
-)
+from app.core.constants import CATEGORY_LABELS
 
 
-def generate_pdf_report(
+def generate_pdf_report(db, center, is_global=False):
 
-    db,
+    # =========================
+    # TITLE
+    # =========================
+    styles = getSampleStyleSheet()
 
-    center,
+    heading = styles["Heading1"]
+    heading.alignment = TA_CENTER
 
-):
+    normal = styles["Normal"]
+    normal.alignment = TA_CENTER
 
-    rows = (
+    if is_global:
+        report_title = "Recaudación consolidada - Gerencia Estadal Bolívar"
+    else:
+        report_title = center.name
 
-        db.query(
-            Item,
-            Inventory.quantity
+    # =========================
+    # QUERY DATA
+    # =========================
+    if is_global:
+
+        rows = (
+            db.query(
+                Item,
+                func.coalesce(func.sum(Inventory.quantity), 0)
+            )
+            .join(
+                Inventory,
+                Inventory.item_id == Item.id
+            )
+            .group_by(Item.id)
+            .order_by(Item.name)
+            .all()
         )
 
-        .join(
+    else:
 
-            Inventory,
-
-            Inventory.item_id
-            ==
-            Item.id
-
+        rows = (
+            db.query(
+                Item,
+                func.coalesce(Inventory.quantity, 0)
+            )
+            .join(
+                Inventory,
+                Inventory.item_id == Item.id
+            )
+            .filter(
+                Inventory.center_id == center.id
+            )
+            .order_by(Item.name)
+            .all()
         )
 
-        .filter(
-
-            Inventory.center_id
-            ==
-            center.id,
-
-            Inventory.quantity
-            >
-            0
-
-        )
-
-        .order_by(
-            Item.name
-        )
-
-        .all()
-
-    )
-
+    # =========================
+    # PDF BUILD
+    # =========================
     buffer = BytesIO()
 
     doc = SimpleDocTemplate(
-
         buffer,
-
-        topMargin=2*cm,
-
-        bottomMargin=2*cm
-
+        topMargin=2 * cm,
+        bottomMargin=2 * cm
     )
-
-    styles = getSampleStyleSheet()
-
-    title = styles["Heading1"]
-
-    title.alignment = TA_CENTER
-
-    normal = styles["Normal"]
-
-    normal.alignment = TA_CENTER
 
     content = []
 
-    # logo
-
+    # =========================
+    # LOGO
+    # =========================
     logo_path = "app/static/Logo El Sistema.jpg"
 
-    if exists(
-        logo_path
-    ):
+    if exists(logo_path):
 
         logo = Image(
-
             logo_path,
-
-            width=3.5*cm,
-
-            height=3.5*cm
-
+            width=3.5 * cm,
+            height=3.5 * cm
         )
 
         logo.hAlign = "CENTER"
+        content.append(logo)
+        content.append(Spacer(1, 15))
 
-        content.append(
-            logo
-        )
-
-        content.append(
-            Spacer(
-                1,
-                15
-            )
-        )
-
+    # =========================
+    # TITLE
+    # =========================
     content.append(
         Paragraph(
-            center.name,
-            title
+            report_title,
+            heading
         )
     )
 
-    content.append(
-        Spacer(
-            1,
-            20
-        )
-    )
+    content.append(Spacer(1, 20))
 
+    # =========================
+    # TABLE HEADER
+    # =========================
     data = [
-
-        [
-
-            "Donación",
-
-            "Categoría",
-
-            "Unidades recaudadas"
-
-        ]
-
+        ["Donación", "Categoría", "Unidades recaudadas"]
     ]
 
-    print(rows)
+    # =========================
+    # TABLE ROWS
+    # =========================
+
+    cell_style = ParagraphStyle(
+        name="cell",
+        fontSize=10,
+        leading=12
+    )
+    
     for item, qty in rows:
 
-        category_key = (
-            str(item.category)
-            .split(".")[-1]
-            .lower()
-        )
+        category_key = str(item.category).split(".")[-1].lower()
+        category_label = CATEGORY_LABELS.get(category_key, category_key)
 
-        data.append(
+        data.append([
 
-            [
+            Paragraph(item.name, cell_style),
 
-                item.name,
+            Paragraph(category_label, cell_style),
 
-                CATEGORY_LABELS.get(
-                    category_key,
-                    category_key
-                ),
-
-                str(qty)
-
-            ]
-
-        )
-
-    table = Table(
-
-        data,
-
-        colWidths=[
-            8*cm,
-            4*cm,
-            4*cm
-        ]
-
-    )
-
-    table.setStyle(
-
-        TableStyle([
-
-            (
-
-                "BACKGROUND",
-
-                (
-                    0,
-                    0
-                ),
-
-                (
-                    -1,
-                    0
-                ),
-
-                colors.HexColor(
-                    "#1565C0"
-                )
-
-            ),
-
-            (
-
-                "TEXTCOLOR",
-
-                (
-                    0,
-                    0
-                ),
-
-                (
-                    -1,
-                    0
-                ),
-
-                colors.white
-
-            ),
-
-            (
-
-                "GRID",
-
-                (
-                    0,
-                    0
-                ),
-
-                (
-                    -1,
-                    -1
-                ),
-
-                1,
-
-                colors.black
-
-            ),
+            str(int(qty or 0))
 
         ])
 
+    # =========================
+    # TABLE STYLE
+    # =========================
+    table = Table(
+        data,
+        colWidths=[7*cm, 5*cm, 4*cm]
     )
 
-    content.append(
-        table
-    )
+    table.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1565C0")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("ALIGN", (0, 0), (-1, 0), "CENTER"),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+    ]))
 
-    content.append(
-        Spacer(
-            1,
-            80
-        )
-    )
+    content.append(table)
+    content.append(Spacer(1, 80))
 
-    content.append(
+    # =========================
+    # SIGNATURE
+    # =========================
+    content.append(Paragraph("___________________________", normal))
+    content.append(Paragraph("Firma de la Gerencia", normal))
 
-        Paragraph(
+    doc.build(content)
 
-            "________________________",
-
-            normal
-
-        )
-
-    )
-
-    content.append(
-
-        Paragraph(
-
-            "Responsable del Centro de Acopio",
-
-            normal
-
-        )
-
-    )
-
-    doc.build(
-        content
-    )
-
-    buffer.seek(
-        0
-    )
-
+    buffer.seek(0)
     return buffer

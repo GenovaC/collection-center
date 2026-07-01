@@ -37,11 +37,25 @@
 
                 {% if user.role=="director" %}
 
-                Vista General de Centros de Acopios
+                    {% if selected_center == 0 %}
+
+                        🌍 Vista Global de Centros de Acopio 🌍
+
+                    {% else %}
+
+                        Centro seleccionado:
+                        {{ centers
+                            | selectattr("id","equalto",selected_center)
+                            | map(attribute="name")
+                            | first
+                        }}
+
+                    {% endif %}
 
                 {% else %}
 
-                Centro de Acopio: {{ user.center.name }}
+                Centro de Acopio:
+                {{ user.center.name }}
 
                 {% endif %}
 
@@ -66,25 +80,37 @@
     <form class="center-selector">
 
         <select
-        name="selected_center"
-        onchange="this.form.submit()"
+            name="selected_center"
+            onchange="this.form.submit()"
         >
 
-        {% for center in centers %}
+            <option
+                value="0"
 
-        <option
-        value="{{ center.id }}"
+                {% if selected_center == 0 %}
+                    selected
+                {% endif %}
+            >
 
-        {% if center.id==selected_center %}
-        selected
-        {% endif %}
-        >
+                Global
 
-        {{ center.name }}
+            </option>
 
-        </option>
+            {% for center in centers %}
 
-        {% endfor %}
+            <option
+                value="{{ center.id }}"
+
+                {% if center.id == selected_center %}
+                selected
+                {% endif %}
+            >
+
+                {{ center.name }}
+
+            </option>
+
+            {% endfor %}
 
         </select>
 
@@ -107,16 +133,41 @@
             ⬇ PDF
         </a>
 
-        <form
-            method="post"
-            action="/inventory/reset"
+        {% if selected_center != 0 %}
 
-            onsubmit="return confirm('¿Seguro que deseas reiniciar el conteo del centro?')"  >
+            <form
+                method="post"
+                action="/inventory/reset"
+                onsubmit="return confirm(
+                '¿Seguro que deseas reiniciar el conteo del centro?'
+                )"
+            >
 
-            <input type="hidden" name="center_id" value="{{ selected_center }}">
-            <button type="submit" class="action-btn reset-btn" > ↺ Reiniciar </button>
+            <input
+                type="hidden"
+                name="center_id"
+                value="{{ selected_center }}"
+            >
 
-        </form>
+            <button
+                type="submit"
+                class="action-btn reset-btn"
+            >
+                ↺ Reiniciar
+            </button>
+
+            </form>
+
+        {% else %}
+
+            <button
+                class="action-btn reset-btn"
+                disabled
+            >
+                ↺ Reiniciar
+            </button>
+
+        {% endif %}
 
     </div>
 
@@ -289,7 +340,11 @@
                                 step="1"
                                 value="{{ row.total }}"
                                 hx-include="closest form"
-                            >
+                                {% if selected_center == 0 %}
+                                    disabled
+                                {% endif %}
+
+                                >
 
                         </form>
 

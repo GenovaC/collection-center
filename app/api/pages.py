@@ -90,9 +90,9 @@ def volunteer_page(
 
             selected_center
 
-            or
+            if selected_center is not None
 
-            user.center_id
+            else user.center_id
 
         )
 
@@ -118,29 +118,31 @@ def volunteer_page(
 
         centers = []
 
-    items = (
+    if center_id == 0:
 
-        db.query(
+        items = (
 
-            Item,
+            db.query(
 
-            func.coalesce(
+                Item,
 
-                Inventory.quantity,
+                func.coalesce(
 
-                0
+                    func.sum(
+                        Inventory.quantity
+                    ),
 
-            ).label(
-                "total"
+                    0
+
+                ).label(
+                    "total"
+                )
+
             )
 
-        )
+            .outerjoin(
 
-        .outerjoin(
-
-            Inventory,
-
-            (
+                Inventory,
 
                 Inventory.item_id
                 ==
@@ -148,29 +150,77 @@ def volunteer_page(
 
             )
 
-            &
+            .filter(
+                Item.active == True
+            )
 
-            (
+            .group_by(
+                Item.id
+            )
 
-                Inventory.center_id
-                ==
-                center_id
+            .order_by(
+                Item.name
+            )
+
+            .all()
+
+        )
+
+    else:
+
+        items = (
+
+            db.query(
+
+                Item,
+
+                func.coalesce(
+
+                    Inventory.quantity,
+
+                    0
+
+                ).label(
+                    "total"
+                )
 
             )
 
+            .outerjoin(
+
+                Inventory,
+
+                (
+
+                    Inventory.item_id
+                    ==
+                    Item.id
+
+                )
+
+                &
+
+                (
+
+                    Inventory.center_id
+                    ==
+                    center_id
+
+                )
+
+            )
+
+            .filter(
+                Item.active == True
+            )
+
+            .order_by(
+                Item.name
+            )
+
+            .all()
+
         )
-
-        .filter(
-            Item.active == True
-        )
-
-        .order_by(
-            Item.name
-        )
-
-        .all()
-
-    )
 
     return templates.TemplateResponse(
 

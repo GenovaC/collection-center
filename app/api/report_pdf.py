@@ -79,17 +79,21 @@ def export_pdf(
             "Usuario no autenticado"
         )
 
-    # gerente exporta centro seleccionado
+    # director exporta centro seleccionado
 
-    if (
+    is_global = (
+        user.role == "director"
+        and center_id == 0
+    )
 
-        user.role
-        ==
-        "director"
+    if is_global:
 
-        and
+        center = None
 
-        center_id
+    elif (
+
+        user.role == "director"
+        and center_id
 
     ):
 
@@ -100,9 +104,7 @@ def export_pdf(
             )
 
             .filter(
-                Center.id
-                ==
-                center_id
+                Center.id == center_id
             )
 
             .first()
@@ -113,37 +115,18 @@ def export_pdf(
 
         center = user.center
 
-    pdf = generate_pdf_report(
-
-        db,
-
-        center
-
-    )
+    pdf = generate_pdf_report(db, center, is_global=is_global)
 
     filename = (
-
-        center.name
-
-        .replace(
-            " ",
-            "_"
-        )
-
+        "reporte_global"
+        if is_global
+        else center.name.replace(" ", "_")
     )
 
     return StreamingResponse(
-
         pdf,
-
         media_type="application/pdf",
-
         headers={
-
-            "Content-Disposition":
-
-            f'attachment; filename="{filename}.pdf"'
-
+            "Content-Disposition": f'attachment; filename="{filename}.pdf"'
         }
-
-    )
+)

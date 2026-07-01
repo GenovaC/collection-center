@@ -42,6 +42,11 @@ def update_inventory(
 
 ):
 
+    if center_id == 0:
+        return Response(
+            status_code=204
+        )
+
     if quantity < 0:
         quantity = 0
 
